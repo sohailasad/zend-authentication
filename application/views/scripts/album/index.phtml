@@ -1,0 +1,87 @@
+<style>
+    .divcolor{
+        color: white;
+        background: red;
+        height: 20px;
+        display: none;
+        text-align: center;
+        font-weight: bold;
+        
+}
+
+</style>
+<script>
+    
+    function ajax_send(id)
+    {
+        $.ajax({
+            type:'POST',
+            url:'<?php echo $this->url(array('controller' => 'album',
+                'action' => 'delete'), null, FALSE); ?>',
+            data:{'id':id},
+            success:function(response)
+            {
+                // convert string to object
+                obj = jQuery.parseJSON(response);
+                if(obj.message == 'success')
+                {
+
+                    // impelement code logic to delete row by jquery
+                   
+                    $(document).ready(function(){
+                         $(".divcolor").html(obj.info);
+                          $(".divcolor").show();
+                    $(".divcolor").fadeOut(3000);
+                        $("#"+id).remove();
+
+                    });
+                }
+                else
+                {
+                    // show error message in a div which has
+                    // font color white and background red
+                    $(".divcolor").html(obj.info);
+                    $(".divcolor").show();
+                    $(".divcolor").fadeOut(3000);
+                   
+                }
+
+            }
+        });
+    }
+
+
+</script>
+
+
+<?php
+$this->title = "My Albums";
+$this->headTitle($this->title);
+?>
+<div class="divcolor" ></div>
+<table>
+<tr>
+<th>Title</th>
+<th>Artist</th>
+<th>Added By</th>
+<th>Operations</th>
+</tr>
+<?php if (count($this->paginator)) { ?>
+    <?php foreach($this->paginator as $album) : ?>
+        <tr id="<?php echo $album['id'];?>" >
+            <td><?php echo $this->escape($album['title']); ?></td>
+            <td><?php echo $this->escape($album['artist']); ?></td>
+            <td><?php echo $this->escape($album['fname']); ?></td>
+            <td>
+            <a href="<?php echo $this->url(array('controller'=>'album',
+            'action'=>'edit', 'id'=>$album['id']),null,FALSE);?>">Edit</a> |
+             <a href="javascript:void(0)"  onclick="ajax_send('<?php echo $album['id'] ?>')">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+<?php } ?>
+</table>
+    <?php echo $this->paginationControl($this->paginator,
+                                        'Sliding',
+                                        'my_pagination_control.phtml'); ?>
+  

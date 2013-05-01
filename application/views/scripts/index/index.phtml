@@ -1,0 +1,85 @@
+<style>
+    a:link,
+    a:visited
+    {
+        color: #0398CA;
+    }
+
+    span#zf-name
+    {
+        color: #91BE3F;
+    }
+
+    div#welcome
+    {
+        color: #FFFFFF;
+        background-image: url(http://framework.zend.com/images/bkg_header.jpg);
+        width:  600px;
+        height: 400px;
+        border: 2px solid #444444;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    div#more-information
+    {
+        background-image: url(http://framework.zend.com/images/bkg_body-bottom.gif);
+        height: 100%;
+    }
+</style>
+<!--<div id="welcome">
+    <h1>Welcome to the <span id="zf-name">Zend Framework!</span></h1>
+
+    <h3>This is your project's main page</h3>
+
+    <div id="more-information">
+        <p><img src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" /></p>
+        <p>
+            Helpful Links: <br />
+            <a href="http://framework.zend.com/">Zend Framework Website</a> |
+            <a href="http://framework.zend.com/manual/en/">Zend Framework Manual</a>
+        </p>
+    </div>
+</div>-->
+
+
+<?php
+$this->title = "Registers Users";
+$this->headTitle($this->title);
+?>
+<table>
+<tr>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Email</th>
+<th>Password</th>
+<!--<th>Status</th>
+<th>Created At</th>
+<th>Updated At</th>-->
+<th>Operations</th>
+</tr>
+<?php if (count($this->paginator)) { ?>
+
+    <?php foreach($this->paginator as $user) : ?>
+        <tr>
+            <td><?php echo $this->escape($user['fname']); ?></td>
+            <td><?php echo $this->escape($user['lname']); ?></td>
+            <td><?php echo $this->escape($user['email']); ?></td>
+            <td><?php echo $this->escape($user['password']); ?></td>
+<!--            <td><?php //echo $this->escape($user['status']); ?></td>
+            <td><?php //echo $this->escape($user['createdat']); ?></td>
+            <td><?php //echo $this->escape($user['updatedat']); ?></td>-->
+            <td>
+            <a href="<?php echo $this->url(array('controller'=>'index',
+            'action'=>'edit', 'id'=>$user['id']),null,FALSE);?>">Edit</a> |
+             <a href="<?php echo $this->url(array('controller'=>'index',
+           'action'=>'delete', 'id'=>$user['id']),null,FALSE);?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+<?php } ?>
+</table>
+    <?php echo $this->paginationControl($this->paginator,
+                                        'Sliding',
+                                        'my_pagination_control.phtml'); ?>
+
